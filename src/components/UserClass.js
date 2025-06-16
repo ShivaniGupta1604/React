@@ -45,6 +45,14 @@ class UserClass extends react.Component {
       console.log(json);
   }
 
+  componentDidUpdate(){
+    console.log(" Component DidUpdate")
+  }
+
+  componentWillUnmount(){
+    console.log(" Component Will Unmount")
+  }
+
   
   //NEVER UPDATE STATE VARIABLES DIRECTLY..in fundtioanl component we use setState to update state variables while in class based components we use this.setState{}
 
@@ -87,13 +95,41 @@ class UserClass extends react.Component {
 export default UserClass;
 
 
-// When the page loads:  
-// 1. the parent constructor is called 
-// 2. parent render is called 
-// 3. child constructor is called 
-// 4. child renver is called 
-// 5. child component didMount is called
-// 6. Parent component didMount is called
+/***
+ * When the page loads:  
+ * 
+ * 1. the parent constructor is called 
+ * 2. parent render is called 
+ * 3. child constructor is called 
+ * 4. child renver is called 
+ * 5. child component didMount is called
+ * 6. Parent component didMount is called
+ * 
+ * 
+ * componentDidMount() is used to make API Calls ->
+ */
 
 
-// componentDidMount() is used to make API Calls ->
+/***
+ * 
+ * ---MOUNTING--------
+ * 
+ * Constructor is called witgh dummy data
+ * Render happens with dummy data
+ *     <HTML DUMMY>
+ * Component DidMount
+ *     <API CALL>
+ *     <this.setState>   --> state variable is updated
+ * 
+ * 
+ * ---UPDATE----------
+ * 
+ *     render (API Data)
+ *     <HTML new API Data>
+ *     Component DidUpdate
+ * 
+ * 
+ * 
+ * 
+ */
+
