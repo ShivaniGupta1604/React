@@ -1,10 +1,10 @@
 import { LOGO_URL } from "../Utils/constants";
 import { useState } from "react";
 import { Link } from "react-router-dom";
+import useOnlineStatus from "../Utils/useOnlineStatus";
 
 const Header = () => {
   const [btnNameReact, setBtnNameReact] = useState("Login");
-
 
   // if no dependency array => useEffect is called on every render
   // if dependency array is empty = [] => useEffect is called on initial render only(just once)
@@ -13,6 +13,7 @@ const Header = () => {
   // useState is always called insside a functional Component else it gives error.
   // Never create state variables inside confditional statments or loop
 
+  const onlineStatus = useOnlineStatus();
 
   return (
     <div className="header">
@@ -21,6 +22,7 @@ const Header = () => {
       </div>
       <div className="nav-items">
         <ul>
+          <li>Online Status: {onlineStatus ? "✅" : "🔴"} </li>
           <li>
             <Link to="/">Home</Link>
           </li>
@@ -29,6 +31,9 @@ const Header = () => {
           </li>
           <li>
             <Link to="/about">About Us</Link>
+          </li>
+          <li>
+            <Link to="/grocery">Grocery</Link>
           </li>
           <li>Cart</li>
           <button
