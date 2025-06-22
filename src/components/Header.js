@@ -1,7 +1,8 @@
 import { LOGO_URL } from "../Utils/constants";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Link } from "react-router-dom";
 import useOnlineStatus from "../Utils/useOnlineStatus";
+import UserContext from "../Utils/UserContext";
 
 const Header = () => {
   const [btnNameReact, setBtnNameReact] = useState("Login");
@@ -14,6 +15,10 @@ const Header = () => {
   // Never create state variables inside confditional statments or loop
 
   const onlineStatus = useOnlineStatus();
+
+  const {loggedInUser} = useContext(UserContext);
+
+  console.log(loggedInUser);
 
   return (
     <div className="flex justify-between bg-gray-100 shadow-lg m-2">
@@ -46,6 +51,7 @@ const Header = () => {
           >
             {btnNameReact}
           </button>
+          <li className="px-4 font-bold">{loggedInUser}</li>
         </ul>
       </div>
     </div>
