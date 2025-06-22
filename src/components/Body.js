@@ -25,23 +25,26 @@ const Body = () => {
       "https://www.swiggy.com/dapi/restaurants/list/v5?lat=28.4594965&lng=77.0266383&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING"
     );
     const json = await data.json();
-
-    console.log(json);
-
-    if (json.length === 0) {
-      return <Shimmer />;
+  
+    //console.log(json);
+  
+    const restaurants =
+      json?.data?.cards?.find(
+        (c) =>
+          c?.card?.card?.gridElements?.infoWithStyle?.restaurants?.length > 0
+      )?.card?.card?.gridElements?.infoWithStyle?.restaurants;
+  
+    if (restaurants) {
+      setListOfRestaurant(restaurants);
+      setFilteredRestaurant(restaurants);
+    } else {
+      console.error("Could not find restaurant data in API response");
+      setListOfRestaurant([]); // fallback to empty list to avoid crash
     }
-
-    setListOfRestaurant(
-      json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants
-    );
-    setFilteredRestaurant(
-      json?.data?.cards[4]?.card?.card?.gridElements?.infoWithStyle?.restaurants
-    );
   };
 
 
-  console.log(listOfRestaurants);
+  //console.log('lis of rest', listOfRestaurants);
 
   const onlineStatus = useOnlineStatus();
 
@@ -53,19 +56,19 @@ const Body = () => {
 
   return (
     <div className="body">
-      <div className="filter">
-        <div className="search">
+      <div className="filter flex">
+        <div className="m-4 p-4">
           <input
             type="text"
-            className="search-box"
+            className="border border-solid border-black"
             value={searchText}
             onChange={(e) => {
               setSearchText(e.target.value);
             }}
           />
-          <button
+          <button className="px-4 py-2 w-48 bg-gray-100 m-4 rounded-lg  hover:bg-gray-300"
             onClick={() => {
-              console.log(searchText);
+              //console.log(searchText);
 
               const filteredRestaurants = listOfRestaurants.filter((res) =>
                 res.info.name.toLowerCase().includes(searchText.toLowerCase())
@@ -75,9 +78,10 @@ const Body = () => {
           >
             Search
           </button>
-        </div>
+        </div >
+        <div className="m-4 p-4 w-60 flex items-center">
         <button
-          className="filter-btn"
+          className="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-300"
           onClick={() => {
             const filteredList = listOfRestaurants.filter(
               (res) => res.info.avgRating > 4
@@ -87,8 +91,9 @@ const Body = () => {
         >
           Top Rated Restaurants
         </button>
+        </div>
       </div>
-      <div className="res-container">
+      <div className="flex flex-wrap">
         {filteredRestaurants.map((restaurant) => (
           <Link
             key={restaurant.info.id}

@@ -1,19 +1,18 @@
 import Shimmer from "./Shimmer";
 import { useParams } from "react-router";
 import useRestaurantMenu from "../Utils/useRestaurantMenu";
+import RestaurantCategory from "./RestaurantCategory";
 
 const RestaurantMenu = () => {
-
   const params = useParams();
-  console.log(params);
+  //console.log(params);
 
-  const {resId} = useParams();
+  const { resId } = useParams();
 
-  const resInfo= useRestaurantMenu(resId);
-
+  const resInfo = useRestaurantMenu(resId);
 
   //   console.log(resInfo);
-  console.log(resInfo?.cards[2]?.card?.card?.info);
+  //console.log(resInfo?.cards[2]?.card?.card?.info);
 
   // Show loading shimmer while data is null
   if (!resInfo) return <Shimmer />;
@@ -26,50 +25,54 @@ const RestaurantMenu = () => {
 
   const { name, cuisines, costForTwoMessage } = restaurantInfo;
 
-  console.log("resInfo",resInfo)
+  //console.log("resInfo",resInfo)
 
-  const obj = resInfo?.cards?.[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.[2]?.card?.card;
+  const obj =
+    resInfo?.cards?.[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.[2]?.card
+      ?.card;
 
-//   console.log("value", resInfo?.cards?.[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.[2]?.card?.card)
-//   console.log( "ItemCards", itemCards);
+  //console.log("resInfo", resInfo);
 
-//   if (!itemCards) return <Shimmer />;
+  //   console.log("value", resInfo?.cards?.[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards?.[2]?.card?.card)
+  //   console.log( "ItemCards", itemCards);
 
+  //   if (!itemCards) return <Shimmer />;
 
   function findItemCards(obj) {
-    if (typeof obj !== 'object' || obj === null) return null;
-  
-    if ('itemCards' in obj) {
+    if (typeof obj !== "object" || obj === null) return null;
+
+    if ("itemCards" in obj) {
       return obj.itemCards;
     }
-  
+
     for (const key in obj) {
       const found = findItemCards(obj[key]);
       if (found) return found;
     }
-  
+
     return null;
   }
-  
+
   const itemCards = findItemCards(resInfo);
-  console.log("itemCards found:", itemCards);
-  
+  //console.log("itemCards found:", itemCards);
+
+  const categories =
+    resInfo?.cards[4]?.groupedCard?.cardGroupMap?.REGULAR?.cards.filter(
+      (c) =>
+        c.card?.card?.["@type"] ===
+        "type.googleapis.com/swiggy.presentation.food.v2.ItemCategory"
+    );
+  //console.log("categories", categories);
 
   return (
-    <div>
-      <h1>{name}</h1>
-      <p>
+    <div className="text-center">
+      <h1 className="font-bold my-6 text-3xl">{name}</h1>
+      <p className="font-bold my-3 text-">
         {cuisines?.join(", ")} - {costForTwoMessage}
       </p>
-      <h2>Menu</h2>
-      <ul>
-        {itemCards.map((item) => (
-            <li key={item.card.info.id}>
-            {item.card.info.name} - {"Rs."}
-            {item.card.info.price / 100 || item.card.info.defaultPrice / 100}
-        </li>
-        ))}
-      </ul>
+      {categories.map((category) => (
+        <RestaurantCategory key={category?.card?.card.title} data={category?.card?.card} />
+      ))}
     </div>
   );
 };
