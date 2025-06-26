@@ -55,10 +55,11 @@ const Body = () => {
   }
 
   return (
-    <div className="body">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-white">
       <div className="filter flex">
         <div className="m-4 p-4">
           <input
+            data-testid="searchInput"
             type="text"
             className="border border-solid border-black"
             value={searchText}
@@ -66,7 +67,7 @@ const Body = () => {
               setSearchText(e.target.value);
             }}
           />
-          <button className="px-4 py-2 w-48 bg-gray-100 m-4 rounded-lg  hover:bg-gray-300"
+          <button className="px-4 py-2 w-48 bg-gray-200 m-4 rounded-lg  hover:bg-gray-300"
             onClick={() => {
               //console.log(searchText);
 
@@ -81,7 +82,7 @@ const Body = () => {
         </div >
         <div className="m-4 p-4 w-60 flex items-center">
         <button
-          className="px-4 py-2 bg-gray-100 rounded-lg hover:bg-gray-300"
+          className="px-4 py-2 bg-gray-200 rounded-lg hover:bg-gray-300"
           onClick={() => {
             const filteredList = listOfRestaurants.filter(
               (res) => res.info.avgRating > 4

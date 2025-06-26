@@ -15,7 +15,7 @@ class About extends Component {
   render() {
     console.log("Parent Render");
     return (
-      <div>
+      <div className="min-h-screen bg-gradient-to-br from-indigo-50 to-white p-6">
         <h1>About</h1>
         {/* <h2>This is the about page</h2> */}
         {/* <User name="Shivani Gupta" location="Patna" contact="sGupta" /> */}
